@@ -10,7 +10,7 @@ app.use(express.json())
 //send all requests for auth to routes/auth.js file
 app.use('/api/auth', require('./routes/auth'))
 //send all requests for notes to routes/notes.js file
-// app.use('/api/notes', require('./routes/notes'))
+app.use('/api/notes', require('./routes/notes'))
 
 
 

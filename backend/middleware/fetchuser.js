@@ -1,7 +1,6 @@
 const express = require('express');
-const router = express.Router();
 const jwt = require('jsonwebtoken');
-
+const router = express.Router();
 const JWT_SECRET = "random778array0394"
 
 const fetchuser = (req, res, next) => {
