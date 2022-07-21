@@ -9,9 +9,7 @@ export default function Login() {
 
     const { darkMode } = useContext(DarkModeContext)
 
-    const handleCheck = (e) => {
-        console.log(e.target.checked)
-    }
+
     return (
 
 
