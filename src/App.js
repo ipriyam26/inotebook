@@ -10,20 +10,28 @@ import Home from './components/Home';
 import About from './components/About';
 import SignUp from './components/SignUp';
 import Login from './components/Login';
+import NoteState from './context/NoteState';
+import UserState from './context/UserState';
 
 function App() {
   return (
-<DarkModeState>
-   <Router>
-    <NavBar/>
-    <Routes>
-      <Route path="/" element={<Home></Home>} />
-      <Route path="/about" element={<About/>} />
-      <Route path="/signup" element={<SignUp/>} />
-      <Route path="/login" element={<Login/>} />
-    </Routes>
-    </Router>
-</DarkModeState>
+    <DarkModeState>
+      <NoteState>
+        <UserState>
+
+          <Router>
+            <NavBar />
+            <Routes>
+              <Route path="/" element={<Home></Home>} />
+              <Route path="/about" element={<About />} />
+              <Route path="/signup" element={<SignUp />} />
+              <Route path="/login" element={<Login />} />
+            </Routes>
+          </Router>
+          
+        </UserState>
+      </NoteState>
+    </DarkModeState>
 
   );
 }

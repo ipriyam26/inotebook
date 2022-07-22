@@ -69,7 +69,7 @@ router.put("/update/:id", fetchuser, async (req, res) => {
         }, {new: true});
         res.status(200).json(updatedNote);
     }
-    catch{
+    catch(err){
         console.log(err.message);
         res.status(500).json("Internal Server Error");
     }
@@ -88,9 +88,10 @@ router.delete("/delete/:id", fetchuser, async (req, res) => {
         await Notes.findByIdAndDelete(req.params.id);
         res.status(200).json({"Success": "Note deleted","note":note});
     }
-    catch{
+    catch(err){
         console.log(err.message);
         res.status(500).json("Internal Server Error");
-    }})
+    }
+})
 
 module.exports = router;

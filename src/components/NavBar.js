@@ -2,15 +2,16 @@ import React from 'react';
 import { Link } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import DarkModeContext from '../context/darkModeContext'
+import UserContext from '../context/UserContext';
 
 export default function NavBar() {
     const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
     const [active, setActive] = useState(window.location.pathname)
-    console.log(active)
+    const { user,logout } = useContext(UserContext)
+
+
     const handleDarkMode = () => {
-        console.log(darkMode)
         toggleDarkMode()
-        console.log(darkMode)
     }
 
     return (
@@ -34,13 +35,28 @@ export default function NavBar() {
                                 <Link className={`nav-link ${active === "/about" ? "active" : ""}`} onClick={
                                     () => setActive("/about")
                                 } to="/about">About</Link>
-                            </li>                   
-                             <li className="nav-item">
+                            </li>
+                            {
+                                user ?
+                                <li className="nav-item">
+                                    <Link className={`nav-link ${active === "/login" ? "active" : ""}`} onClick={
+                                        () => {
+                                            logout()
+                                            setActive("/login")
+                                        }
+                                    } to="/login">Logout</Link>
+                                </li>
+                                :
+                            <li className="nav-item">
                                 <Link className={`nav-link ${active === "/signup" ? "active" : ""}`} onClick={
                                     () => setActive("/signup")
                                 } to="/signup">Signup</Link>
                             </li>
+
+                            }        
+                             
                         </ul>
+                        
                         <div className={`form-check form-switch text-${!darkMode ? "dark" : "light"}`}>
                             <input className="form-check-input" type="checkbox" value={darkMode} id="flexSwitchCheckDefault" onClick={handleDarkMode} />
                             <label className="form-check-label" htmlFor="flexSwitchCheckDefault">DarkMode</label>

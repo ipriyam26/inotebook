@@ -1,13 +1,75 @@
 import React from 'react'
 import '../css/SignUp.css'
-import { useContext } from 'react'
+import { useContext ,useEffect,useState} from 'react'
 import DarkModeContext from '../context/darkModeContext'
-import { Link } from 'react-router-dom'
+import { Link,useNavigate } from 'react-router-dom'
+import UserContext from '../context/UserContext'
 
 
 export default function SignUp() {
+    const navigate = useNavigate()
 
     const { darkMode } = useContext(DarkModeContext)
+    const { register,user } = useContext(UserContext)
+    const [credentials, setCredentials] = useState({
+        name: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+        check: false
+    })
+ 
+    const handleNameChange = (e) => {
+        setCredentials({
+            ...credentials,
+            name: e.target.value
+        })
+    }
+    const handleEmailChange = (e) => {
+        setCredentials({
+            ...credentials,
+            email: e.target.value
+        })
+    }
+    const handlePasswordChange = (e) => {
+        setCredentials({
+            ...credentials,
+            password: e.target.value
+        })
+    }
+    const handleConfirmPasswordChange = (e) => {
+        setCredentials({
+            ...credentials,
+            confirmPassword: e.target.value
+        })
+    }
+
+    const handleRegister = async () => {
+        // e.preventDefault()
+        if (credentials.password.length < 6) {
+            alert("Password must be at least 6 characters");
+            return
+        
+        }
+        if(credentials.password!==credentials.confirmPassword){
+            alert("Passwords do not match");
+            return
+        }
+        if(!credentials.check){
+            alert("Please accept the terms and conditions");
+            return
+        }
+        await register(credentials.name,credentials.email,credentials.password)
+        if(user){
+            navigate('/')
+        }
+    }
+
+    useEffect(() => {
+        if (user) {
+            navigate('/')
+        }
+    }  ,[navigate])
 
 
     return (
@@ -22,23 +84,30 @@ export default function SignUp() {
                                         <h2 className={`text-uppercase  text-${!darkMode ? "dark" : "light"}  text-center mb-5`}>Create an account</h2>
                                         <form>
                                             <div className="form-outline mb-4">
-                                                <input type="text" id="form3Example1cg" placeholder='Your Name' className="form-control form-control-lg" />
+                                                <input type="text" id="form3Example1cg" placeholder='Your Name' onChange={handleNameChange} className="form-control form-control-lg" />
                                             </div>
 
                                             <div className="form-outline mb-4">
-                                                <input type="email" id="form3Example3cg" placeholder='Your Email' className="form-control form-control-lg" />
+                                                <input type="email" id="form3Example3cg" placeholder='Your Email' onChange={handleEmailChange} className="form-control form-control-lg" />
                                             </div>
 
                                             <div className="form-outline mb-4">
-                                                <input type="password" id="form3Example4cg" placeholder='Password' className="form-control form-control-lg" />
+                                                <input type="password" id="form3Example4cg" placeholder='Password' onChange={handlePasswordChange} className="form-control form-control-lg" />
                                             </div>
 
                                             <div className="form-outline mb-4">
-                                                <input type="password" id="form3Example4cdg" placeholder='Confirm Password' className="form-control form-control-lg" />
+                                                <input type="password" id="form3Example4cdg" placeholder='Confirm Password' onChange={handleConfirmPasswordChange} className="form-control form-control-lg" />
                                             </div>
 
                                             <div className="form-check d-flex justify-content-center mb-5">
-                                                <input className="form-check-input me-2" type="checkbox" value="" id="form2Example3cg" />
+                                                <input className="form-check-input me-2" type="checkbox" value={credentials.check} onClick={
+                                                    () => {
+                                                        setCredentials({
+                                                            ...credentials,
+                                                            check: !credentials.check
+                                                        })
+                                                    }
+                                                } id="form2Example3cg" />
                                                 <label className={`form-check-label text-${!darkMode ? "dark" : "light"}`} htmlFor="form2Example3g">
                                                     I agree all statements in <a href="#!" className={`text-body text-${!darkMode ? "dark" : "light"}`}><u className={`text-${!darkMode ? "dark" : "light"}`}>Terms of service</u></a>
                                                 </label>

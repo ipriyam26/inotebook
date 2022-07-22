@@ -1,14 +1,19 @@
-import React,{useState} from 'react'
+import React,{useState,useContext} from 'react'
+import DarkModeContext from '../context/darkModeContext'
+import NoteContext from '../context/NoteContext'
 
 export default function AddNote(props) {
     let {color} = props
     const [adding, setAdding] = useState(false)
     const [note, setNote] = useState({
         title:"",
-        body:"",
-        tags:"",
+        description:"",
+        tags:[],
 
     })
+    const {addNote} = useContext(NoteContext)
+    const {darkMode} = useContext(DarkModeContext)
+
 
 
     const handleInputTag = (e) => {
@@ -21,14 +26,14 @@ export default function AddNote(props) {
         }
         setNote({
           ...note,
-          tags: words.join(" ")
+          tags: words
         })
       }
     
     const handleInputBody = (e) => {
         setNote({
           ...note,
-          body: e.target.value
+          description: e.target.value
         })
       }
     
@@ -39,7 +44,17 @@ export default function AddNote(props) {
           title: e.target.value
         })
         setAdding(true);
-      }  
+
+      } 
+      
+      const handleAddNote= async ()=>{
+        let tags = note.tags.map(tag=>tag.replace("#",""))
+        await addNote(note.title,note.description,tags)
+        setAdding(false)
+        setNote({  title:"",
+        description:"",
+        tags:[],})
+      }
 
   return (
     !adding ?
@@ -51,9 +66,14 @@ export default function AddNote(props) {
 
         <input style={{ border: 0, boxShadow: 'none', borderRadius: '0px' }} className={`form-control ${color.background + " " + color.text} form-control-lg`} onChange={handleInputTitle} type="text" value={note.title} placeholder="Title" aria-label=".form-control-lg example" />
 
-        <input style={{ border: 0, boxShadow: 'none', borderRadius: '0px', fontSize: '18px' }} className={`form-control ${color.background + " " + color.text} form-control-lg`} onChange={handleInputBody} type="text" size={5} value={note.body} placeholder="Description" id="description" aria-label=".form-control-lg example" />
+        <input style={{ border: 0, boxShadow: 'none', borderRadius: '0px', fontSize: '18px' }} className={`form-control ${color.background + " " + color.text} form-control-lg`} onChange={handleInputBody} type="text" size={5} value={note.description} placeholder="Description" id="description" aria-label=".form-control-lg example" />
 
-        <input style={{ border: 0, boxShadow: 'none', borderRadius: '0px', fontSize: '18px' }} className={`form-control text-bold ${color.background + " " + color.text} form-control-lg`} onChange={handleInputTag} type="text" size={5} value={note.tags} placeholder="Tags" aria-label=".form-control-lg example" />
+        <input style={{ border: 0, boxShadow: 'none', borderRadius: '0px', fontSize: '18px' }} className={`form-control text-bold ${color.background + " " + color.text} form-control-lg`} onChange={handleInputTag} type="text" size={5} value={note.tags.join(" ")} placeholder="Tags" aria-label=".form-control-lg example" />
+        <div className="row my-3">
+              <div className="col-7"></div>
+              <button type="button" className={`btn btn-secondary text-${!darkMode?"light":"dark"} mx-2 col-2`}  >Close</button>
+              <button type="button" className={`btn mx-2 btn-${!darkMode?"dark":"light"} text-${!darkMode?"light":"dark"} col-2`} onClick={handleAddNote}>Save changes</button>
+            </div>
 
       </div>
   )
