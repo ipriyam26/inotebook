@@ -1,16 +1,18 @@
 import React from 'react'
 import '../css/SignUp.css'
-import { useContext ,useEffect,useState} from 'react'
+import { useContext, useEffect, useState } from 'react'
 import DarkModeContext from '../context/darkModeContext'
-import { Link,useNavigate } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import UserContext from '../context/UserContext'
+import { SignUpForm } from './SignUpForm'
+
 
 
 export default function SignUp() {
     const navigate = useNavigate()
 
     const { darkMode } = useContext(DarkModeContext)
-    const { register,user } = useContext(UserContext)
+    const { register, user } = useContext(UserContext)
     const [credentials, setCredentials] = useState({
         name: '',
         email: '',
@@ -18,7 +20,7 @@ export default function SignUp() {
         confirmPassword: '',
         check: false
     })
- 
+
     const handleNameChange = (e) => {
         setCredentials({
             ...credentials,
@@ -49,18 +51,18 @@ export default function SignUp() {
         if (credentials.password.length < 6) {
             alert("Password must be at least 6 characters");
             return
-        
+
         }
-        if(credentials.password!==credentials.confirmPassword){
+        if (credentials.password !== credentials.confirmPassword) {
             alert("Passwords do not match");
             return
         }
-        if(!credentials.check){
+        if (!credentials.check) {
             alert("Please accept the terms and conditions");
             return
         }
-        const res = await register(credentials.name,credentials.email,credentials.password)
-        if(res){
+        const res = await register(credentials.name, credentials.email, credentials.password)
+        if (res) {
             navigate('/')
         }
     }
@@ -69,7 +71,7 @@ export default function SignUp() {
         if (user) {
             navigate('/')
         }
-    }  ,[navigate])
+    }, [navigate])
 
 
     return (
@@ -82,46 +84,7 @@ export default function SignUp() {
                                 <div className="card">
                                     <div className={`card-body bg-${darkMode ? "dark" : "light"} rounded p-5`}>
                                         <h2 className={`text-uppercase  text-${!darkMode ? "dark" : "light"}  text-center mb-5`}>Create an account</h2>
-                                        <form>
-                                            <div className="form-outline mb-4">
-                                                <input type="text" id="form3Example1cg" placeholder='Your Name' onChange={handleNameChange} className="form-control form-control-lg" />
-                                            </div>
-
-                                            <div className="form-outline mb-4">
-                                                <input type="email" id="form3Example3cg" placeholder='Your Email' onChange={handleEmailChange} className="form-control form-control-lg" />
-                                            </div>
-
-                                            <div className="form-outline mb-4">
-                                                <input type="password" id="form3Example4cg" placeholder='Password' onChange={handlePasswordChange} className="form-control form-control-lg" />
-                                            </div>
-
-                                            <div className="form-outline mb-4">
-                                                <input type="password" id="form3Example4cdg" placeholder='Confirm Password' onChange={handleConfirmPasswordChange} className="form-control form-control-lg" />
-                                            </div>
-
-                                            <div className="form-check d-flex justify-content-center mb-5">
-                                                <input className="form-check-input me-2" type="checkbox" value={credentials.check} onClick={
-                                                    () => {
-                                                        setCredentials({
-                                                            ...credentials,
-                                                            check: !credentials.check
-                                                        })
-                                                    }
-                                                } id="form2Example3cg" />
-                                                <label className={`form-check-label text-${!darkMode ? "dark" : "light"}`} htmlFor="form2Example3g">
-                                                    I agree all statements in <a href="#!" className={`text-body text-${!darkMode ? "dark" : "light"}`}><u className={`text-${!darkMode ? "dark" : "light"}`}>Terms of service</u></a>
-                                                </label>
-                                            </div>
-
-                                            <div className="d-flex justify-content-center">
-                                                <button type="button"
-                                                    className={`btn btn-${!darkMode ? "dark" : "light"} text-${darkMode ? "dark" : "light"} btn-block btn-lg`} onClick={handleRegister}>Register</button>
-                                            </div>
-
-                                            <p className="text-center text-muted mt-5 mb-0">Have already an account? <Link to="/login"
-                                                className={`fw-bold  text-${!darkMode ? "dark" : "light"}`}><u>Login here</u></Link></p>
-
-                                        </form>
+                                        <SignUpForm darkMode={darkMode} credentials={credentials} setCredentials={setCredentials} handleNameChange={handleNameChange} handleEmailChange={handleEmailChange} handlePasswordChange={handlePasswordChange} handleConfirmPasswordChange={handleConfirmPasswordChange} handleRegister={handleRegister}></SignUpForm>
 
                                     </div>
                                 </div>

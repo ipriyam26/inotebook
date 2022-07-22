@@ -3,20 +3,29 @@ import DarkModeContext from '../context/darkModeContext'
 import NoteContext from '../context/NoteContext'
 import AddNote from './AddNote'
 import Note from './Note'
+import UserContext from '../context/UserContext'
+import { useNavigate } from 'react-router-dom'
 
 
 export default function Home() {
 
   const { darkMode } = useContext(DarkModeContext)
   const { notes, getNotes, editNote,deleteNote } = useContext(NoteContext)
-
+  const { user } = useContext(UserContext)
+  const navigate = useNavigate()
   const [color, setColor] = useState({
     "background": "bg-light",
     "text": "text-dark"
   })
 
   useEffect(() => {
-    getNotes()
+    if (localStorage.getItem("access_token")) {
+      getNotes()
+    }
+    else{
+      navigate('/login')
+    }
+
     // eslint-disable-next-line 
   }, [])
 
