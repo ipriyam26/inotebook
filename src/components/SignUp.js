@@ -59,8 +59,8 @@ export default function SignUp() {
             alert("Please accept the terms and conditions");
             return
         }
-        await register(credentials.name,credentials.email,credentials.password)
-        if(user){
+        const res = await register(credentials.name,credentials.email,credentials.password)
+        if(res){
             navigate('/')
         }
     }

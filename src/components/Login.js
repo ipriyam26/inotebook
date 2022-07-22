@@ -18,8 +18,8 @@ export default function Login() {
 
     const handleLogin = async ()=>{
         // e.preventDefault()
-        await login(credentials.email,credentials.password)
-        if(user){
+        const res = await login(credentials.email,credentials.password)
+        if(res){
             navigate('/')
         }
         else {

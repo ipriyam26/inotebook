@@ -21,7 +21,9 @@ const UserState = (props) => {
         if (user.access_token) {
             localStorage.setItem('access_token', user.access_token);
             setUser(user);
+            return user;
         }
+        return null
        
 
     }
@@ -48,7 +50,9 @@ const UserState = (props) => {
         if (user.access_token) {
             localStorage.setItem('access_token', user.access_token);
             setUser(user);
+            return user;
         }
+        return null
     }
     
     return (
