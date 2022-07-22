@@ -115,7 +115,7 @@ export default function SignUp() {
 
                                             <div className="d-flex justify-content-center">
                                                 <button type="button"
-                                                    className={`btn btn-${!darkMode ? "dark" : "light"} text-${darkMode ? "dark" : "light"} btn-block btn-lg`}>Register</button>
+                                                    className={`btn btn-${!darkMode ? "dark" : "light"} text-${darkMode ? "dark" : "light"} btn-block btn-lg`} onClick={handleRegister}>Register</button>
                                             </div>
 
                                             <p className="text-center text-muted mt-5 mb-0">Have already an account? <Link to="/login"
