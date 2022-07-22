@@ -5,8 +5,23 @@ import UserContext from "./UserContext";
 const UserState = (props) => {
 
 
-    const [user, setUser] = useState(localStorage.getItem('access_token'));
+    const [user, setUser] = useState({access_token:localStorage.getItem('access_token')}
+    );
+    const [userDetails, setUserDetails] = useState(null);
     
+    const getUser = async () => {
+        // API Call
+        const response = await fetch(`http://localhost:7400/api/auth/getuser`, {
+            method: 'GET',
+            headers: {
+                'Content-Type': 'application/json',
+                "x-access-token": user.access_token
+            }
+        });
+        const details = await response.json();
+        setUserDetails(details);
+    }
+      
     const login = async (email, password) => {
         // API Call
         const response = await fetch(`http://localhost:7400/api/auth/login`, {
@@ -56,9 +71,10 @@ const UserState = (props) => {
     }
     
     return (
-        <UserContext.Provider value={{ user, login, logout,register }}>
+        <UserContext.Provider value={{ user, login, logout,register,getUser,userDetails }}>
         {props.children}
         </UserContext.Provider>
     );
     }
+
     export default UserState;

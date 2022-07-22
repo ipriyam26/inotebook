@@ -1,5 +1,5 @@
-import React from 'react';
-import { Link } from 'react-router-dom'
+import React, { useEffect } from 'react';
+import { Link, useNavigate } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import DarkModeContext from '../context/darkModeContext'
 import UserContext from '../context/UserContext';
@@ -7,12 +7,20 @@ import UserContext from '../context/UserContext';
 export default function NavBar() {
     const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
     const [active, setActive] = useState(window.location.pathname)
-    const { user,logout } = useContext(UserContext)
+    const { user,logout,getUser,userDetails } = useContext(UserContext)
 
+    const navigate = useNavigate()
 
     const handleDarkMode = () => {
         toggleDarkMode()
     }
+    useEffect(() => {
+if (localStorage.getItem("access_token")) {
+    getUser()
+}
+    }, [])
+    
+
 
     return (
         <div>
@@ -59,8 +67,10 @@ export default function NavBar() {
                         
                         <div className={`form-check form-switch text-${!darkMode ? "dark" : "light"}`}>
                             <input className="form-check-input" type="checkbox" value={darkMode} id="flexSwitchCheckDefault" onClick={handleDarkMode} />
-                            <label className="form-check-label" htmlFor="flexSwitchCheckDefault">DarkMode</label>
                         </div>
+                        <h6 className='nav-item align-center' >
+                            {userDetails ? `${userDetails.name}` : ""}
+                        </h6>
                     </div>
                 </div>
             </nav>
