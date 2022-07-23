@@ -3,9 +3,10 @@ import DarkModeContext from "./darkModeContext";
 
 const DarkModeState = (props) => {
 
-    const [darkMode, setDarkMode] = useState(false);
+    const [darkMode, setDarkMode] = useState(localStorage.getItem("darkMode") === "true");
     
     const toggleDarkMode = () => {
+        localStorage.setItem("darkMode", !darkMode);
         if (!darkMode){
             document.body.style.backgroundColor = "#202020";
         }

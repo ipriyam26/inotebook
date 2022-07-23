@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, useNavigate } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useContext, useState } from 'react'
 import DarkModeContext from '../context/darkModeContext'
 import UserContext from '../context/UserContext';
@@ -7,19 +7,27 @@ import UserContext from '../context/UserContext';
 export default function NavBar() {
     const { darkMode, toggleDarkMode } = useContext(DarkModeContext)
     const [active, setActive] = useState(window.location.pathname)
-    const { user,logout,getUser,userDetails } = useContext(UserContext)
+    const { user, logout, getUser, userDetails } = useContext(UserContext)
 
-    const navigate = useNavigate()
+
 
     const handleDarkMode = () => {
         toggleDarkMode()
     }
+
     useEffect(() => {
-if (localStorage.getItem("access_token")) {
-    getUser()
-}
+        if (localStorage.getItem("access_token")) {
+            getUser()
+        }
+        if (darkMode) {
+            document.body.style.backgroundColor = "#202020";
+        }
+        else {
+            document.body.style.backgroundColor = "#F5F5F5"
+        }
+        // eslint-disable-next-line
     }, [])
-    
+
 
 
     return (
@@ -28,7 +36,7 @@ if (localStorage.getItem("access_token")) {
                 <div className="container-fluid">
                     <Link className="navbar-brand" onClick={
                         () => setActive("/")
-                        } to="/">MyNotebook</Link>
+                    } to="/">MyNotebook</Link>
                     <button className="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                         <span className="navbar-toggler-icon"></span>
                     </button>
@@ -46,29 +54,29 @@ if (localStorage.getItem("access_token")) {
                             </li>
                             {
                                 user ?
-                                <li className="nav-item">
-                                    <Link className={`nav-link ${active === "/login" ? "active" : ""}`} onClick={
-                                        () => {
-                                            logout()
-                                            setActive("/login")
-                                        }
-                                    } to="/login">Logout</Link>
-                                </li>
-                                :
-                            <li className="nav-item">
-                                <Link className={`nav-link ${active === "/signup" ? "active" : ""}`} onClick={
-                                    () => setActive("/signup")
-                                } to="/signup">Signup</Link>
-                            </li>
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${active === "/login" ? "active" : ""}`} onClick={
+                                            () => {
+                                                logout()
+                                                setActive("/login")
+                                            }
+                                        } to="/login">Logout</Link>
+                                    </li>
+                                    :
+                                    <li className="nav-item">
+                                        <Link className={`nav-link ${active === "/signup" ? "active" : ""}`} onClick={
+                                            () => setActive("/signup")
+                                        } to="/signup">Signup</Link>
+                                    </li>
 
-                            }        
-                             
+                            }
+
                         </ul>
-                        
+
                         <div className={`form-check form-switch text-${!darkMode ? "dark" : "light"}`}>
                             <input className="form-check-input" type="checkbox" value={darkMode} id="flexSwitchCheckDefault" onClick={handleDarkMode} />
                         </div>
-                        <h6 className='nav-item align-center' >
+                        <h6 className={`nav-link align-center text-${!darkMode ? "dark" : "light"}`} >
                             {userDetails ? `${userDetails.name}` : ""}
                         </h6>
                     </div>

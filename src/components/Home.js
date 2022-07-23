@@ -3,15 +3,13 @@ import DarkModeContext from '../context/darkModeContext'
 import NoteContext from '../context/NoteContext'
 import AddNote from './AddNote'
 import Note from './Note'
-import UserContext from '../context/UserContext'
 import { useNavigate } from 'react-router-dom'
 
 
 export default function Home() {
 
   const { darkMode } = useContext(DarkModeContext)
-  const { notes, getNotes, editNote,deleteNote } = useContext(NoteContext)
-  const { user } = useContext(UserContext)
+  const { notes, getNotes, editNote, deleteNote } = useContext(NoteContext)
   const navigate = useNavigate()
   const [color, setColor] = useState({
     "background": "bg-light",
@@ -22,7 +20,7 @@ export default function Home() {
     if (localStorage.getItem("access_token")) {
       getNotes()
     }
-    else{
+    else {
       navigate('/login')
     }
 
@@ -84,9 +82,10 @@ export default function Home() {
     })
 
   }
-  const handleDeleteNote = () =>{
-deleteNote(activeNote._id)
+  const handleDeleteNote = () => {
+    deleteNote(activeNote._id)
   }
+ 
 
 
   return (
@@ -104,13 +103,13 @@ deleteNote(activeNote._id)
 
         <div className="row mt-4 align-content-center">
           {
-            notes.map((note, index) => {
-              return <div onClick={() => {
+            notes.map((note, _) => {
+              return <div onClick={()=>{
                 setActiveNote(note)
                 ref.current.click()
-              }} className="col-3 my-2">
-                <Note key={note._id} note={note} />
-              </div>
+              }} key={note._id} className="col-3 my-2">
+                <Note  note={note} />
+                    </div>
             })
           }
         </div>
@@ -144,7 +143,7 @@ deleteNote(activeNote._id)
             <div className="col-5"></div>
             <button type="button" className="btn btn-secondary mx-2 col-2" data-bs-dismiss="modal" onClick={() => {
               setActiveNote(noteInitial)
-            }}>Close</button> 
+            }}>Close</button>
             <button type="button" className="btn btn-danger mx-2 col-2" data-bs-dismiss="modal" onClick={handleDeleteNote}><i className="bi bi-trash"></i> Delete</button>
             <button type="button" className="btn btn-primary mx-2 col-2" data-bs-dismiss="modal" onClick={handleUpdateNote} >Save changes</button>
           </div>
